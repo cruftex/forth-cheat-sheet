@@ -42,16 +42,18 @@ Examples:
 - `-rot` `( x y z -- z x y )`
 - `nip` `( x y -- y )`
 - `tuck` `( x y -- y x y )`
+- `?dup` `( x -- 0 | x x )` (duplicates only if non-zero)
+- `2dup` `( x1 x2 -- x1 x2 x1 x2 )`
+- `2drop` `( x1 x2 -- )`
+- `2swap` `( x1 x2 y1 y2 -- y1 y2 x1 x2 )`
 - `pick` `( xu .. x0 u -- xu .. x0 xu )`
 - `roll` `( xu .. x0 u -- xu-1 .. x0 xu )`
-- `?dup` `( x -- 0 | x x )` duplicates only if non-zero
 
-Example:
+Example for `pick` and `roll`:
 
 ```forth
-\ stack: 10 20 30
-2 pick   \ 10 20 30 10
-2 roll   \ 20 30 10
+1 2 3  2 pick  => 1 2 3 1
+1 2 3  2 roll  => 2 3 1
 ```
 
 ### Return stack
@@ -75,27 +77,27 @@ Words taking two operands from the stack.
 
 ### Arithmetic
 
-_( a b -- result )_ `+` `-` `*` `/` `mod` `max` `min`
-
-_( u1 u2 -- u )_ `umin` `umax`
-
-_( u1 u2 -- ud )_ `um*`
-
-_( a b -- rem quot )_ `/mod`
-
-_( ud u1 -- rem quot )_ `um/mod`
+<table>
+  <tr><td><em>( a b -- result )</em></td><td><code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>mod</code> <code>max</code> <code>min</code></td></tr>
+  <tr><td><em>( u1 u2 -- u )</em></td><td><code>umin</code> <code>umax</code></td></tr>
+  <tr><td><em>( u1 u2 -- ud )</em></td><td><code>um*</code></td></tr>
+  <tr><td><em>( a b -- rem quot )</em></td><td><code>/mod</code></td></tr>
+  <tr><td><em>( ud u1 -- rem quot )</em></td><td><code>um/mod</code></td></tr>
+</table>
 
 ### Comparison
 
-_( a b -- flag )_ `=` `<>` `<` `>` `<=` `>=`
-
-_( u1 u2 -- flag )_ `u<` `u>` `u<=` `u>=`
+<table>
+  <tr><td><em>( a b -- flag )</em></td><td><code>=</code> <code>&lt;&gt;</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td></tr>
+  <tr><td><em>( u1 u2 -- flag )</em></td><td><code>u&lt;</code> <code>u&gt;</code> <code>u&lt;=</code> <code>u&gt;=</code></td></tr>
+</table>
 
 ### Bit Twiddling
 
-_( x y -- result )_ `and` `or` `xor`
-
-_( x u -- x' )_ `lshift` `rshift`
+<table>
+  <tr><td><em>( x y -- result )</em></td><td><code>and</code> <code>or</code> <code>xor</code></td></tr>
+  <tr><td><em>( x u -- x' )</em></td><td><code>lshift</code> <code>rshift</code></td></tr>
+</table>
 
 ## Unary Operators
 
@@ -103,21 +105,24 @@ Words taking one operand from the stack.
 
 ### Arithmetic
 
-_( n -- n' )_ `1+` `1-` `negate` `abs`
-
-_( x -- x' )_ `2*` `2/`
+<table>
+  <tr><td><em>( n -- n' )</em></td><td><code>1+</code> <code>1-</code> <code>negate</code> <code>abs</code></td></tr>
+  <tr><td><em>( x -- x' )</em></td><td><code>2*</code> <code>2/</code></td></tr>
+</table>
 
 ### Comparison
 
-_( x -- flag )_ `0=` `0<>` `0<` `0>`
+<table>
+  <tr><td><em>( x -- flag )</em></td><td><code>0=</code> <code>0&lt;&gt;</code> <code>0&lt;</code> <code>0&gt;</code></td></tr>
+</table>
 
 ### Bit Twiddling
 
-_( x -- x' )_ `invert`
+<table>
+  <tr><td><em>( x -- x' )</em></td><td><code>invert</code></td></tr>
+</table>
 
-## Memory
-
-### Addresses and fetch/store
+## Memory fetch/store
 
 - `@` `( addr -- x )` fetch cell
 - `!` `( x addr -- )` store cell
@@ -125,10 +130,15 @@ _( x -- x' )_ `invert`
 - `c!` `( c addr -- )` store byte
 - `+!` `( n addr -- )` add to cell in memory
 
-### Variables and constants
+## Address arithmetic
 
-- `variable x` reserves space for one cell
-- `constant n` creates a named value
+- `cells` converts cell counts to address offsets
+- `cell+` adjusts address to next cell
+
+## Defining Variables and Constants
+
+- `variable <name>` reserves space for one cell and create a word returning the address
+- `constant <name>` creates a named value
 - `value n` creates a mutable named value
 - `to` updates a `value`
 
@@ -148,13 +158,24 @@ step .
 step .
 ```
 
-### Address arithmetic
+## Reserving arbirary Space
 
-- `cells` converts cell counts to address offsets
-- `chars` converts char counts to address offsets
-- `cell+`
-- `char+`
-- `allot` reserves dictionary space
+A forth compiler writes the program and data to the dictionary space.
+
+- `create <name>` create a word returning an address into dictionary space that can be reserved with the next words
+- `( n ) allot` reserves bytes dictionary space
+- `n ,` reserve space for one cell and store the value
+- `n c,` reserve space for one character and store the value
+
+Examples:
+
+```forth
+\ identical to variable count
+create count 1 cells allot
+
+\ same, but initilised with 0
+create count 0 ,
+```
 
 ## Number output
 
@@ -171,8 +192,8 @@ step .
 - `cr` newline
 - `space` print a space
 - `type` `( addr len -- )` prints a string
-- `." hello"` prints a string during execution of a definition
-- `s" hello"` `( -- addr len )` pushes string address and length
+- `." hello"` prints a string during defenition execution
+- `s" hello"` `( -- addr len )` puts string on stack
 
 Examples:
 
@@ -181,6 +202,11 @@ Examples:
 cr
 s" hello" type cr
 ```
+
+## Input
+
+- `key` `( -- c )` read one character
+- `key?` `( -- f )` true if input is available
 
 ## Conditional execution
 
