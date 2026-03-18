@@ -1,0 +1,91 @@
+@page {
+  size: A4 landscape;
+  margin: 10mm;
+}
+
+html {
+  font-size: 9pt;
+}
+
+body {
+  font-family: "Liberation Sans", "Noto Sans", sans-serif;
+  line-height: 1.2;
+  color: #111;
+  column-count: 3;
+  column-gap: 10mm;
+  column-fill: auto;
+  hyphens: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  break-after: avoid;
+  page-break-after: avoid;
+  margin: 0 0 0.35em 0;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: 16pt;
+}
+
+h2 {
+  font-size: 11pt;
+  margin-top: 0.8em;
+}
+
+h3,
+h4 {
+  font-size: 9pt;
+  margin-top: 0.6em;
+}
+
+p,
+ul,
+ol,
+pre,
+table {
+  margin: 0 0 0.45em 0;
+}
+
+ul,
+ol {
+  padding-left: 1.1em;
+}
+
+li {
+  margin: 0 0 0.15em 0;
+}
+
+pre,
+code {
+  font-family: "Liberation Mono", "Noto Sans Mono", monospace;
+  font-size: 8pt;
+}
+
+pre {
+  white-space: pre-wrap;
+  border: 0.2mm solid #bbb;
+  padding: 1.5mm 2mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+table,
+img {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+hr {
+  border: 0;
+  border-top: 0.2mm solid #bbb;
+  margin: 0.7em 0;
+}
