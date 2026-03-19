@@ -145,9 +145,9 @@ Words taking one operand from the stack.
 Examples:
 
 ```forth
-variable count
-10 count !
-count @ .
+variable counter
+10 counter !
+counter @ .
 
 42 constant answer
 answer .
@@ -160,21 +160,22 @@ step .
 
 ## Reserving arbirary Space
 
-A forth compiler writes the program and data to the dictionary space.
+A forth writes the program and data into a data space called _dictionary_.
 
-- `create <name>` create a word returning an address into dictionary space that can be reserved with the next words
-- `( n ) allot` reserves bytes dictionary space
+- _( -- addr )> `here` address of the next free byte in dictionary
+- `create <name>` create a word returning an address into the dictionary. Space can be reserved with the next words
+- _( n -- )_ `allot` reserves bytes dictionary space
 - `n ,` reserve space for one cell and store the value
 - `n c,` reserve space for one character and store the value
 
 Examples:
 
 ```forth
-\ identical to variable count
-create count 1 cells allot
+\ identical to variable count, not initialised
+create counter 1 cells allot
 
 \ same, but initilised with 0
-create count 0 ,
+create counter 0 ,
 ```
 
 ## Number output
