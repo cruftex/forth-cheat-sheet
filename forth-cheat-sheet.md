@@ -1,23 +1,24 @@
 # Forth Cheat Sheet
 
-Most relevant forth words. Compact, `gforth` / `ec4th` friendly. (C) cruftex.
+Most relevant Forth words. **_@VERSION@_** Updates:
+[cruftex.net/forth-cheat-sheet](https://cruftex.net/forth-cheat-sheet)
 
-## Reading Stack Effects
+## Basic Syntax
 
-Stack effects use `( before -- after )`.
+- Forth is stack-based and uses postfix notation: `2 3 +`
+- A program is a sequence of words or numbers separated by whitespace
+- `\ comment` comments to end of line
+- `( comment )` inline comment
+
+## Stack Effects
+
+Every word gets input from the stack and leaves results on the stack. How many and what type of elements are taken and left is documented in a stack effect in the form: `( before -- after )`.
 
 Examples:
 
 - `( a b -- a+b )`
 - `( n -- n' )`
 - `( -- )`
-
-## Basic Syntax
-
-- Forth is stack-based and uses reverse polish notation: `2 3 +`
-- A word is a command/name separated by whitespace
-- `\ comment` comments to end of line
-- `( comment )` inline comment
 
 ## Defining Words
 
@@ -42,19 +43,17 @@ Examples:
 - `-rot` `( x y z -- z x y )`
 - `nip` `( x y -- y )`
 - `tuck` `( x y -- y x y )`
-- `?dup` `( x -- 0 | x x )` (duplicates only if non-zero)
+- `?dup` `( x -- 0 | x x )` (duplicates if non-zero)
 - `2dup` `( x1 x2 -- x1 x2 x1 x2 )`
 - `2drop` `( x1 x2 -- )`
 - `2swap` `( x1 x2 y1 y2 -- y1 y2 x1 x2 )`
 - `pick` `( xu .. x0 u -- xu .. x0 xu )`
 - `roll` `( xu .. x0 u -- xu-1 .. x0 xu )`
 
-Example for `pick` and `roll`:
+Examples:
 
-```forth
-1 2 3  2 pick  => 1 2 3 1
-1 2 3  2 roll  => 2 3 1
-```
+- `1 2 3 swap .s` output:  `<3> 1 3 2`
+- `1 2 3 0 pick .s` output:  `<4> 1 2 3 3`
 
 ### Return stack
 
@@ -69,11 +68,9 @@ The return stack can be used within an definition to keep data.
 - Numbers are written directly: `42`, `-7`
 - `true` is `-1`
 - `false` is `0`
-- Any non-zero value is treated as true by control words
+- Any non-zero value is treated as true by conditionals
 
-## Binary Operators
-
-Words taking two operands from the stack.
+## Operators
 
 ### Arithmetic
 
@@ -83,29 +80,6 @@ Words taking two operands from the stack.
   <tr><td><em>( u1 u2 -- ud )</em></td><td><code>um*</code></td></tr>
   <tr><td><em>( a b -- rem quot )</em></td><td><code>/mod</code></td></tr>
   <tr><td><em>( ud u1 -- rem quot )</em></td><td><code>um/mod</code></td></tr>
-</table>
-
-### Comparison
-
-<table>
-  <tr><td><em>( a b -- flag )</em></td><td><code>=</code> <code>&lt;&gt;</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td></tr>
-  <tr><td><em>( u1 u2 -- flag )</em></td><td><code>u&lt;</code> <code>u&gt;</code> <code>u&lt;=</code> <code>u&gt;=</code></td></tr>
-</table>
-
-### Bit Twiddling
-
-<table>
-  <tr><td><em>( x y -- result )</em></td><td><code>and</code> <code>or</code> <code>xor</code></td></tr>
-  <tr><td><em>( x u -- x' )</em></td><td><code>lshift</code> <code>rshift</code></td></tr>
-</table>
-
-## Unary Operators
-
-Words taking one operand from the stack.
-
-### Arithmetic
-
-<table>
   <tr><td><em>( n -- n' )</em></td><td><code>1+</code> <code>1-</code> <code>negate</code> <code>abs</code></td></tr>
   <tr><td><em>( x -- x' )</em></td><td><code>2*</code> <code>2/</code></td></tr>
 </table>
@@ -113,12 +87,16 @@ Words taking one operand from the stack.
 ### Comparison
 
 <table>
+  <tr><td><em>( a b -- flag )</em></td><td><code>=</code> <code>&lt;&gt;</code> <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td></tr>
+  <tr><td><em>( u1 u2 -- flag )</em></td><td><code>u&lt;</code> <code>u&gt;</code> <code>u&lt;=</code> <code>u&gt;=</code></td></tr>
   <tr><td><em>( x -- flag )</em></td><td><code>0=</code> <code>0&lt;&gt;</code> <code>0&lt;</code> <code>0&gt;</code></td></tr>
 </table>
 
 ### Bit Twiddling
 
 <table>
+  <tr><td><em>( x y -- result )</em></td><td><code>and</code> <code>or</code> <code>xor</code></td></tr>
+  <tr><td><em>( x u -- x' )</em></td><td><code>lshift</code> <code>rshift</code></td></tr>
   <tr><td><em>( x -- x' )</em></td><td><code>invert</code></td></tr>
 </table>
 
@@ -162,7 +140,7 @@ step .
 
 A forth writes the program and data into a data space called _dictionary_.
 
-- _( -- addr )> `here` address of the next free byte in dictionary
+- _( -- addr )_ `here` address of the next free byte in dictionary
 - `create <name>` create a word returning an address into the dictionary. Space can be reserved with the next words
 - _( n -- )_ `allot` reserves bytes dictionary space
 - `n ,` reserve space for one cell and store the value
@@ -257,18 +235,15 @@ Examples:
 - `.sh` print stack contents in hex without altering it (ec4th)
 - _( addr len -- )_ `dump` dump memory contents at address (gforth/ec4th)
 
+
 ## Error codes
 
 - `-1` `abort`
 - `-2` `abort"` / error with aditional message
-- `-3` stack overflow
-- `-4` stack underflow
-- `-5` return stack overflow
-- `-6` return stack underflow
+- `-3` / `-4` stack overflow / underflow
+- `-5` / `-6`  return stack overflow / underflow
 - `-9` invalid memory address
 - `-10` division by zero
-- `-11` result out of range
-- `-12` argument type mismatch
 - `-13` undefined word
 - `-14` interpreting a compile-only word
 - `-22` control structure mismatch
