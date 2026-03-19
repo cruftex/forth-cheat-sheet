@@ -22,9 +22,9 @@ Examples:
 
 ## Defining Words
 
-`: name ... ;` defines a word<br>
-`exit` returns early from a word<br>
-`recurse` calls the current word recursively
+`: name ... ;` — defines a word<br>
+`exit` — returns early from a word<br>
+`recurse` — calls the current word recursively
 
 Examples:
 
@@ -43,7 +43,7 @@ Examples:
 `-rot` `( x y z -- z x y )`<br>
 `nip` `( x y -- y )`<br>
 `tuck` `( x y -- y x y )`<br>
-`?dup` `( x -- 0 | x x )` (duplicates if non-zero)<br>
+`?dup` `( x -- 0 | x x )` — duplicates if non-zero<br>
 `2dup` `( x1 x2 -- x1 x2 x1 x2 )`<br>
 `2drop` `( x1 x2 -- )`<br>
 `2swap` `( x1 x2 y1 y2 -- y1 y2 x1 x2 )`<br>
@@ -61,11 +61,13 @@ Examples:
 `r>` `( -- x ) ( R: x -- )`<br>
 `r@` `( -- x ) ( R: x -- x )`
 
-The return stack can be used within an definition to keep data. 
+The return stack can be used within a definition to keep data.
 
 ## Literals and Booleans
 
-- Numbers are written directly: `42`, `-7`
+- Numbers are written directly: `42`, `-7` 
+- Number intepretation depends on `base` (see below)
+- Hex numbers can be prefixed with `$`
 - `true` is `-1`
 - `false` is `0`
 - Any non-zero value is treated as true by conditionals
@@ -100,25 +102,28 @@ The return stack can be used within an definition to keep data.
   <tr><td><em>( x -- x' )</em></td><td><code>invert</code></td></tr>
 </table>
 
-## Memory fetch/store
+## Memory Fetch and Store
 
-`@` `( addr -- x )` fetch cell<br>
-`!` `( x addr -- )` store cell<br>
-`c@` `( addr -- c )` fetch byte<br>
-`c!` `( c addr -- )` store byte<br>
-`+!` `( n addr -- )` add to cell in memory
+One stack element holds a _cell_ which size depends on the machine type and Forth implementation, typically 16, 32 or 64 bits.
 
-## Address arithmetic
+`@` `( addr -- x )` — fetch cell<br>
+`!` `( x addr -- )` — store cell<br>
+`c@` `( addr -- c )` — fetch byte<br>
+`c!` `( c addr -- )` — store byte<br>
+`+!` `( n addr -- )` — add to cell in memory
 
-`cells` converts cell counts to address offsets<br>
-`cell+` adjusts address to next cell
+## Address Arithmetic
+
+`cells` — converts cell counts to address offsets<br>
+`cell+` — adjusts address to next cell<br>
+`1+` or `char+` — adjust address to next byte
 
 ## Defining Variables and Constants
 
-`variable <name>` reserves space for one cell and creates a word returning the address<br>
-`constant <name>` creates a named value<br>
-`value n` creates a mutable named value<br>
-`to` updates a `value`
+`variable <name>` — reserves space for one cell and creates a word returning the address<br>
+`constant <name>` — creates a named value<br>
+`value n` — creates a mutable named value<br>
+`to` — updates a `value`
 
 Examples:
 
@@ -136,15 +141,15 @@ step .
 step .
 ```
 
-## Reserving arbirary Space
+## Reserving Data Space
 
 A forth writes the program and data into a data space called _dictionary_.
 
-_( -- addr )_ `here` address of the next free byte in dictionary<br>
-`create <name>` creates a word returning an address into the dictionary; space can be reserved with the next words<br>
-_( n -- )_ `allot` reserves bytes in dictionary space<br>
-`n ,` reserves space for one cell and stores the value<br>
-`n c,` reserves space for one character and stores the value
+`here ( -- addr )` — address of the next free byte<br>
+`create <name>` — creates a word returning an address into the dictionary; space can be reserved with the next words<br>
+`allot ( n -- )` — reserves bytes<br>
+`, ( n -- )` — reserves space for a cell and stores it<br>
+`c, ( c -- )` — reserves space for one byte and stores it
 
 Examples:
 
@@ -156,26 +161,26 @@ create counter 1 cells allot
 create counter 0 ,
 ```
 
-## Number output
+## Number Output
 
-`.` prints top stack item<br>
-`.s` prints stack contents without consuming them<br>
-`hex` switches to hexadecimal output<br>
-`decimal` switches to decimal output<br>
-_( n -- )_ `base !` switches number output and input to arbitrary base<br>
-_( -- n )_ `base @` gets the active base
+`.` — prints top stack item<br>
+`.s` — prints stack contents without consuming them<br>
+`hex` — switches to hexadecimal output<br>
+`decimal` — switches to decimal output<br>
+`2 base !` — switches number output and input to base 2<br>
+`base @ ( -- n )` — gets the active base
 
 ## Output and Strings
 
-`emit` prints one character<br>
-`cr` newline<br>
-`space` prints a space<br>
-`type` `( addr len -- )` prints a string<br>
-`." hello"` prints a string during definition execution<br>
-`s" hello"` `( -- addr len )` puts string on the stack<br>
-`count` `( c-addr1 -- c-addr2 u )` turns a counted string into address and length<br>
-`move` `( addr1 addr2 u -- )` copies `u` bytes<br>
-`place` `( addr u c-addr -- )` stores as counted string
+`emit` — prints one character<br>
+`cr` — newline<br>
+`space` — prints a space<br>
+`type` `( addr len -- )` — prints a string<br>
+`." hello"` — prints a string during definition execution<br>
+`s" hello"` `( -- addr len )` — puts string on the stack<br>
+`count` `( c-addr1 -- c-addr2 u )` — turns a counted string into address and length<br>
+`move` `( addr1 addr2 u -- )` — copies `u` bytes<br>
+`place` `( addr u c-addr -- )` — stores as counted string
 
 Examples:
 
@@ -187,8 +192,8 @@ s" hello" type cr
 
 ## Input
 
-`key` `( -- c )` reads one character<br>
-`key?` `( -- f )` is true if input is available
+`key` `( -- c )` — reads one character<br>
+`key?` `( -- f )` — true if input is available
 
 ## Conditional execution
 
@@ -212,13 +217,13 @@ Loops can only be used within a definition.
 `begin ... ( f ) until`<br>
 `begin ... ( f ) while ... repeat`<br>
 `( end+1 start ) do ... loop`<br>
-`( end+1 start ) ?do ... loop` for possibly skipped loops<br>
+`( end+1 start ) ?do ... loop` — for possibly skipped loops<br>
 `( end+1 start ) do ... +loop`<br>
-`leave` exits a `do` loop early<br>
-`i` current loop index<br>
-`j` next outer loop index
+`leave` — exits a `do` loop early<br>
+`i` — current loop index<br>
+`j` — next outer loop index
 
-Examples:
+Examples
 
 ```forth
 : countdown ( n -- )
@@ -230,32 +235,51 @@ Examples:
 
 ## Debugging
 
-`words` prints available words<br>
-`.s` prints stack contents<br>
-`.sh` prints stack contents in hex (ec4th)<br>
-_( addr len -- )_ `dump` dumps memory contents (gforth/ec4th)
+`words` — prints available words<br>
+`.s` — prints stack contents<br>
+`.sh` — prints stack contents in hex (ec4th)<br>
+`dump ( addr len -- )` — dumps memory contents (gforth/ec4th)
 
 ## Error codes
 
 `-1` `abort`<br>
-`-2` `abort"` / error with additional message<br>
-`-3` / `-4` stack overflow / underflow<br>
-`-5` / `-6` return stack overflow / underflow<br>
-`-9` invalid memory address<br>
-`-10` division by zero<br>
-`-13` undefined word<br>
-`-14` interpreting a compile-only word<br>
-`-22` control structure mismatch<br>
-`-25` return stack imbalance<br>
-`-28` user interrupt
+`-2` `abort"` — error with additional message<br>
+`-3` / `-4` — stack overflow / underflow<br>
+`-5` / `-6` — return stack overflow / underflow<br>
+`-9` — invalid memory address<br>
+`-10` — division by zero<br>
+`-13` — undefined word<br>
+`-14` — interpreting a compile-only word<br>
+`-22` — control structure mismatch<br>
+`-25` — return stack imbalance<br>
+`-28` — user interrupt
 
-## Compilation vs Interpretation
+## Indirect Execution
 
-In interpret state, words execute immediately<br>
-Some words are only allowed inside a definition; that is called compile-only<br>
-Inside `: ... ;`, most words compile instead of execute<br>
-`[` switches to interpret state during compilation<br>
-`]` switches back to compile state<br>
-`literal` compiles a stack value as a literal<br>
-`' name` gets the execution token of `name`<br>
-`execute` runs an execution token
+`( -- xt ) ' name` — gets the execution token of `name`<br>
+`( xt -- ) execute` — runs an execution token
+
+Examples:
+
+````forth
+: green ." green" ;
+: blue ." blue" ;
+variable phase
+' green phase !
+phase @ execute
+````
+
+## ec4th Arduino
+
+`millis ( -- n )` — elapsed milliseconds<br>
+`dmillis ( -- d )` — elapsed millis as double<br>
+`dmicros ( -- d )` — elapsed microseconds as double<br>
+`ms ( u -- )` — wait given milliseconds<br>
+`io! ( c io-addr -- )` — store byte into the IO address<br>
+`io@ ( io-addr -- c )` — fetch byte from IO address<br>
+IO address constants for port B: `pinb`, `ddrb`, `portb`
+
+````forth
+255 ddrb io! \ make all pins of port B outputs
+255 portb io! \ switch on everything connected
+````
