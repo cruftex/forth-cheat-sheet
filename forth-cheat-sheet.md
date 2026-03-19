@@ -16,15 +16,15 @@ Every word gets input from the stack and leaves results on the stack. How many a
 
 Examples:
 
-- `( a b -- a+b )`
-- `( n -- n' )`
-- `( -- )`
+`( a b -- a+b )`<br>
+`( n -- n' )`<br>
+`( -- )`
 
 ## Defining Words
 
-- `: name ... ;` defines a word
-- `exit` returns early from a word
-- `recurse` calls the current word recursively
+`: name ... ;` defines a word<br>
+`exit` returns early from a word<br>
+`recurse` calls the current word recursively
 
 Examples:
 
@@ -35,31 +35,31 @@ Examples:
 
 ## Data Stack Manipulation
 
-- `dup` `( x -- x x )`
-- `drop` `( x -- )`
-- `swap` `( x y -- y x )`
-- `over` `( x y -- x y x )`
-- `rot` `( x y z -- y z x )`
-- `-rot` `( x y z -- z x y )`
-- `nip` `( x y -- y )`
-- `tuck` `( x y -- y x y )`
-- `?dup` `( x -- 0 | x x )` (duplicates if non-zero)
-- `2dup` `( x1 x2 -- x1 x2 x1 x2 )`
-- `2drop` `( x1 x2 -- )`
-- `2swap` `( x1 x2 y1 y2 -- y1 y2 x1 x2 )`
-- `pick` `( xu .. x0 u -- xu .. x0 xu )`
-- `roll` `( xu .. x0 u -- xu-1 .. x0 xu )`
+`dup` `( x -- x x )`<br>
+`drop` `( x -- )`<br>
+`swap` `( x y -- y x )`<br>
+`over` `( x y -- x y x )`<br>
+`rot` `( x y z -- y z x )`<br>
+`-rot` `( x y z -- z x y )`<br>
+`nip` `( x y -- y )`<br>
+`tuck` `( x y -- y x y )`<br>
+`?dup` `( x -- 0 | x x )` (duplicates if non-zero)<br>
+`2dup` `( x1 x2 -- x1 x2 x1 x2 )`<br>
+`2drop` `( x1 x2 -- )`<br>
+`2swap` `( x1 x2 y1 y2 -- y1 y2 x1 x2 )`<br>
+`pick` `( xu .. x0 u -- xu .. x0 xu )`<br>
+`roll` `( xu .. x0 u -- xu-1 .. x0 xu )`
 
 Examples:
 
-- `1 2 3 swap .s` output:  `<3> 1 3 2`
-- `1 2 3 0 pick .s` output:  `<4> 1 2 3 3`
+`1 2 3 swap .s` output: `<3> 1 3 2`<br>
+`1 2 3 0 pick .s` output: `<4> 1 2 3 3`
 
 ### Return stack
 
-- `>r` `( x -- ) ( R: -- x )`
-- `r>` `( -- x ) ( R: x -- )`
-- `r@` `( -- x ) ( R: x -- x )`
+`>r` `( x -- ) ( R: -- x )`<br>
+`r>` `( -- x ) ( R: x -- )`<br>
+`r@` `( -- x ) ( R: x -- x )`
 
 The return stack can be used within an definition to keep data. 
 
@@ -102,23 +102,23 @@ The return stack can be used within an definition to keep data.
 
 ## Memory fetch/store
 
-- `@` `( addr -- x )` fetch cell
-- `!` `( x addr -- )` store cell
-- `c@` `( addr -- c )` fetch byte
-- `c!` `( c addr -- )` store byte
-- `+!` `( n addr -- )` add to cell in memory
+`@` `( addr -- x )` fetch cell<br>
+`!` `( x addr -- )` store cell<br>
+`c@` `( addr -- c )` fetch byte<br>
+`c!` `( c addr -- )` store byte<br>
+`+!` `( n addr -- )` add to cell in memory
 
 ## Address arithmetic
 
-- `cells` converts cell counts to address offsets
-- `cell+` adjusts address to next cell
+`cells` converts cell counts to address offsets<br>
+`cell+` adjusts address to next cell
 
 ## Defining Variables and Constants
 
-- `variable <name>` reserves space for one cell and create a word returning the address
-- `constant <name>` creates a named value
-- `value n` creates a mutable named value
-- `to` updates a `value`
+`variable <name>` reserves space for one cell and creates a word returning the address<br>
+`constant <name>` creates a named value<br>
+`value n` creates a mutable named value<br>
+`to` updates a `value`
 
 Examples:
 
@@ -140,11 +140,11 @@ step .
 
 A forth writes the program and data into a data space called _dictionary_.
 
-- _( -- addr )_ `here` address of the next free byte in dictionary
-- `create <name>` create a word returning an address into the dictionary. Space can be reserved with the next words
-- _( n -- )_ `allot` reserves bytes dictionary space
-- `n ,` reserve space for one cell and store the value
-- `n c,` reserve space for one character and store the value
+_( -- addr )_ `here` address of the next free byte in dictionary<br>
+`create <name>` creates a word returning an address into the dictionary; space can be reserved with the next words<br>
+_( n -- )_ `allot` reserves bytes in dictionary space<br>
+`n ,` reserves space for one cell and stores the value<br>
+`n c,` reserves space for one character and stores the value
 
 Examples:
 
@@ -158,24 +158,24 @@ create counter 0 ,
 
 ## Number output
 
-- `.` prints top stack item
-- `.s` prints stack contents without consuming them
-- `hex` switch to hexadecimal output
-- `decimal` switch to decimal output
-- _( n -- )_ `base !` switch number output and input to arbirary base
-- _( -- n )_ `base @` get base in effect
+`.` prints top stack item<br>
+`.s` prints stack contents without consuming them<br>
+`hex` switches to hexadecimal output<br>
+`decimal` switches to decimal output<br>
+_( n -- )_ `base !` switches number output and input to arbitrary base<br>
+_( -- n )_ `base @` gets the active base
 
 ## Output and Strings
 
-- `emit` prints one character
-- `cr` newline
-- `space` print a space
-- `type` `( addr len -- )` prints a string
-- `." hello"` prints a string during defenition execution
-- `s" hello"` `( -- addr len )` puts string on stack
-- `count` `( c-addr1 -- c-addr2 u )` counted string to address and length
-- `move` `( addr1 addr2 u -- )` copy `u` bytes
-- `place` `( addr u c-addr -- )` store as counted string
+`emit` prints one character<br>
+`cr` newline<br>
+`space` prints a space<br>
+`type` `( addr len -- )` prints a string<br>
+`." hello"` prints a string during definition execution<br>
+`s" hello"` `( -- addr len )` puts string on the stack<br>
+`count` `( c-addr1 -- c-addr2 u )` turns a counted string into address and length<br>
+`move` `( addr1 addr2 u -- )` copies `u` bytes<br>
+`place` `( addr u c-addr -- )` stores as counted string
 
 Examples:
 
@@ -187,15 +187,15 @@ s" hello" type cr
 
 ## Input
 
-- `key` `( -- c )` read one character
-- `key?` `( -- f )` true if input is available
+`key` `( -- c )` reads one character<br>
+`key?` `( -- f )` is true if input is available
 
 ## Conditional execution
 
 Conditionals can only be used within a definition.
 
-- `( f ) if ... then`
-- `( f ) if ... else ... then`
+`( f ) if ... then`<br>
+`( f ) if ... else ... then`
 
 Example:
 
@@ -208,15 +208,15 @@ Example:
 
 Loops can only be used within a definition.
 
-- `begin ... again`
-- `begin ... ( f ) until`
-- `begin ... ( f ) while ... repeat`
-- `( end+1 start ) do ... loop`
-- `( end+1 start ) ?do ... loop` for possibly skipped loops
-- `( end+1 start ) do ... +loop`
-- `leave` exits a `do` loop early
-- `i` current loop index
-- `j` next outer loop index
+`begin ... again`<br>
+`begin ... ( f ) until`<br>
+`begin ... ( f ) while ... repeat`<br>
+`( end+1 start ) do ... loop`<br>
+`( end+1 start ) ?do ... loop` for possibly skipped loops<br>
+`( end+1 start ) do ... +loop`<br>
+`leave` exits a `do` loop early<br>
+`i` current loop index<br>
+`j` next outer loop index
 
 Examples:
 
@@ -230,33 +230,32 @@ Examples:
 
 ## Debugging
 
-- `words` prints available words
-- `.s` print stack contents without altering it
-- `.sh` print stack contents in hex without altering it (ec4th)
-- _( addr len -- )_ `dump` dump memory contents at address (gforth/ec4th)
-
+`words` prints available words<br>
+`.s` prints stack contents<br>
+`.sh` prints stack contents in hex (ec4th)<br>
+_( addr len -- )_ `dump` dumps memory contents (gforth/ec4th)
 
 ## Error codes
 
-- `-1` `abort`
-- `-2` `abort"` / error with aditional message
-- `-3` / `-4` stack overflow / underflow
-- `-5` / `-6`  return stack overflow / underflow
-- `-9` invalid memory address
-- `-10` division by zero
-- `-13` undefined word
-- `-14` interpreting a compile-only word
-- `-22` control structure mismatch
-- `-25` return stack imbalance
-- `-28` user interrupt
+`-1` `abort`<br>
+`-2` `abort"` / error with additional message<br>
+`-3` / `-4` stack overflow / underflow<br>
+`-5` / `-6` return stack overflow / underflow<br>
+`-9` invalid memory address<br>
+`-10` division by zero<br>
+`-13` undefined word<br>
+`-14` interpreting a compile-only word<br>
+`-22` control structure mismatch<br>
+`-25` return stack imbalance<br>
+`-28` user interrupt
 
 ## Compilation vs Interpretation
 
-- In interpret state, words execute immediately
-- Some words are only allowed inside a definition, that is called compile only
-- Inside `: ... ;`, most words compile instead of execute
-- `[` switches to interpret state during compilation
-- `]` switches back to compile state
-- `literal` compiles a stack value as a literal
-- `' name` gets execution token of `name`
-- `execute` runs an execution token
+In interpret state, words execute immediately<br>
+Some words are only allowed inside a definition; that is called compile-only<br>
+Inside `: ... ;`, most words compile instead of execute<br>
+`[` switches to interpret state during compilation<br>
+`]` switches back to compile state<br>
+`literal` compiles a stack value as a literal<br>
+`' name` gets the execution token of `name`<br>
+`execute` runs an execution token
