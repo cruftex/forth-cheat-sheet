@@ -195,6 +195,9 @@ create counter 0 ,
 - `type` `( addr len -- )` prints a string
 - `." hello"` prints a string during defenition execution
 - `s" hello"` `( -- addr len )` puts string on stack
+- `count` `( c-addr1 -- c-addr2 u )` counted string to address and length
+- `move` `( addr1 addr2 u -- )` copy `u` bytes
+- `place` `( addr u c-addr -- )` store as counted string
 
 Examples:
 
@@ -211,6 +214,8 @@ s" hello" type cr
 
 ## Conditional execution
 
+Conditionals can only be used within a definition.
+
 - `( f ) if ... then`
 - `( f ) if ... else ... then`
 
@@ -222,6 +227,8 @@ Example:
 ```
 
 ## Looping
+
+Loops can only be used within a definition.
 
 - `begin ... again`
 - `begin ... ( f ) until`
