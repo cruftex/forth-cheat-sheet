@@ -1,7 +1,6 @@
 # Forth Cheat Sheet
 
-Most relevant Forth words. **_@VERSION@_** Updates:
-[cruftex.net/forth-cheat-sheet](https://cruftex.net/forth-cheat-sheet)
+Most relevant Forth words. **_@VERSION@_** 
 
 ## Basic Syntax
 
@@ -82,8 +81,7 @@ The return stack can be used within a definition to keep data.
   <tr><td><em>( u1 u2 -- ud )</em></td><td><code>um*</code></td></tr>
   <tr><td><em>( a b -- rem quot )</em></td><td><code>/mod</code></td></tr>
   <tr><td><em>( ud u1 -- rem quot )</em></td><td><code>um/mod</code></td></tr>
-  <tr><td><em>( n -- n' )</em></td><td><code>1+</code> <code>1-</code> <code>negate</code> <code>abs</code></td></tr>
-  <tr><td><em>( x -- x' )</em></td><td><code>2*</code> <code>2/</code></td></tr>
+  <tr><td><em>( n -- n' )</em></td><td><code>2*</code> <code>2/</code> <code>1+</code> <code>1-</code> <code>negate</code> <code>abs</code></td></tr>
 </table>
 
 ### Comparison
@@ -100,6 +98,15 @@ The return stack can be used within a definition to keep data.
   <tr><td><em>( x y -- result )</em></td><td><code>and</code> <code>or</code> <code>xor</code></td></tr>
   <tr><td><em>( x u -- x' )</em></td><td><code>lshift</code> <code>rshift</code></td></tr>
   <tr><td><em>( x -- x' )</em></td><td><code>invert</code></td></tr>
+</table>
+
+### Double Number Arithmetic
+
+<table>
+  <tr><td><em>( n -- d )</em></td><td><code>s&gt;d</code></td></tr>
+  <tr><td><em>( d1 d2 -- d3 )</em></td><td><code>d+</code> <code>d-</code></td></tr>
+  <tr><td><em>( d -- d' )</em></td><td><code>dnegate</code></td></tr>
+  <tr><td><em>( d -- flag )</em></td><td><code>d0=</code> <code>d0&lt;</code></td></tr>
 </table>
 
 ## Memory Fetch and Store
@@ -122,8 +129,6 @@ One stack element holds a _cell_ which size depends on the machine type and Fort
 
 `variable <name>` — reserves space for one cell and creates a word returning the address<br>
 `constant <name>` — creates a named value<br>
-`value n` — creates a mutable named value<br>
-`to` — updates a `value`
 
 Examples:
 
@@ -134,11 +139,6 @@ counter @ .
 
 42 constant answer
 answer .
-
-5 value step
-step .
-7 to step
-step .
 ```
 
 ## Reserving Data Space
@@ -176,24 +176,16 @@ create counter 0 ,
 `cr` — newline<br>
 `space` — prints a space<br>
 `type` `( addr len -- )` — prints a string<br>
-`." hello"` — prints a string during definition execution<br>
+`." hello"` — prints string during definition execution<br>
 `s" hello"` `( -- addr len )` — puts string on the stack<br>
 `count` `( c-addr1 -- c-addr2 u )` — turns a counted string into address and length<br>
 `move` `( addr1 addr2 u -- )` — copies `u` bytes<br>
 `place` `( addr u c-addr -- )` — stores as counted string
 
-Examples:
-
-```forth
-123 .
-cr
-s" hello" type cr
-```
-
 ## Input
 
 `key` `( -- c )` — reads one character<br>
-`key?` `( -- f )` — true if input is available
+`key?` `( -- f )` — `true` if input is available
 
 ## Conditional execution
 
@@ -277,7 +269,7 @@ phase @ execute
 `ms ( u -- )` — wait given milliseconds<br>
 `io! ( c io-addr -- )` — store byte into the IO address<br>
 `io@ ( io-addr -- c )` — fetch byte from IO address<br>
-IO address constants for port B: `pinb`, `ddrb`, `portb`
+`pinb` `ddrb` `portb` — IO address constants for port B
 
 ````forth
 255 ddrb io! \ make all pins of port B outputs
