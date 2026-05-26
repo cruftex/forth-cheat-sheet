@@ -2,11 +2,15 @@
 
 Compact Forth cheat sheet in Markdown, intended for printing as a tri-fold reference.
 
-The main source is [forth-cheat-sheet.md](forth-cheat-sheet.md). Print styling lives in [print.css](print.css). The Pandoc HTML template used for PDF generation lives in [template.html](template.html).
+The latest PDF can be downloaded on the [GitHub releases page](../../releases)
 
-## Print to PDF
+For printing, use double-sided output and flip on the short edge.
+
+## Improving and creating the  PDF
 
 Recommended on Ubuntu 24.04: `pandoc` + `weasyprint`.
+
+The main source is [forth-cheat-sheet.md](forth-cheat-sheet.md). Print styling lives in [print.css](print.css). The Pandoc HTML template used for PDF generation lives in [template.html](template.html).
 
 Install:
 
@@ -31,8 +35,6 @@ Other targets:
 make html
 make clean
 ```
-
-For printing, use double-sided output and flip on the short edge.
 
 ## Guidelines
 
