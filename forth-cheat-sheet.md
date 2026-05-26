@@ -181,6 +181,12 @@ create counter 1 cells allot
 
 \ same, but initilised with 0
 create counter 0 ,
+
+create days/month-table
+  31 , 28 , 31 , 30 , 31 , 30 ,
+  31 , 31 , 30 , 31 , 30 , 31 ,
+
+: days/month ( month -- days ) 1- cells days/month-table + @ ;
 ```
 
 ## Number Output
