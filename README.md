@@ -2,7 +2,7 @@
 
 Compact Forth cheat sheet in Markdown, intended for printing as a tri-fold reference.
 
-The latest PDF can be downloaded on the [GitHub releases page](../../releases)
+You can download the [Forth Cheat Sheet as PDF](../../releases/latest/download/forth-cheat-sheet.pdf).
 
 For printing, use double-sided output and flip on the short edge.
 
