@@ -1,13 +1,29 @@
 # Forth Cheat Sheet
 
-Most relevant Forth words. **_@VERSION@_** 
+Most relevant Forth words. **_@VERSION@_** <br>
+(CC BY-SA) 2026 Jens Wilke / cruftex / DJ8CE
 
 ## Basic Syntax
 
-- Forth is stack-based and uses postfix notation: `2 3 +`
-- A program is a sequence of words or numbers separated by whitespace
+- Forth is stack-based and uses postfix notation, meaning that the operator is placed after the operands: `2 3 +`
+- A program is a sequence of words or numbers separated by whitespace. The sequence is executed in the order the words or numbers appear
 - `\ comment` comments to end of line
 - `( comment )` inline comment
+
+Examples:
+
+```forth
+2 3 + .
+\ comment for the whole line
+```
+
+Looking at the sequence `2 3 + .` the following happens step by step:
+
+- `2` — put the number `1` on the stack
+- `3` — put the number `3` on the stack
+- `+` — adds the top two numbers on the stack and returns the result on the
+stack
+- `.` — print the top of stack
 
 ## Stack Effects
 
@@ -30,9 +46,15 @@ Examples:
 ```forth
 : square ( n -- n2 ) dup * ;
 : cube ( n -- n3 ) dup dup * * ;
+: percent ( part whole -- pct )
+  swap 100 * swap / ;
 ```
 
 ## Data Stack Manipulation
+
+As we saw in the `percent` example above, sometimes the operands are not on
+the correct position in the stack. Here is a list of common forth words that
+manipulate the stack:
 
 `dup` `( x -- x x )`<br>
 `drop` `( x -- )`<br>
@@ -69,7 +91,7 @@ The return stack can be used within a definition to keep data.
 - Hex numbers can be prefixed with `$`
 - `true` is `-1`
 - `false` is `0`
-- Any non-zero value is treated as true by conditionals
+- Any non-zero value is treated as true by conditional execution words (`if`, `while`, `until`)
 
 ## Operators
 
