@@ -38,6 +38,8 @@ make clean
 
 ## Guidelines
 
+For improvements please follow these rules:
+
 - Keep it compact. Prefer reference material over tutorial prose.
 - Do not explain words whose meaning is already obvious from the name, such as `<`, `invert`, or `min`.
 - Group operators by arity first: binary and unary.
